@@ -50,10 +50,10 @@ class ListUserFragment : Fragment() {
     }
 
     private fun setup(){
-        val layoutManager = GridLayoutManager(mContext, 3)
+        val layoutManager = GridLayoutManager(mContext, 2)
         binding.rvListUser.layoutManager = layoutManager
 
-        val itemDecoration = DividerItemDecoration(mContext, layoutManager.orientation)
+        val itemDecoration = DividerItemDecoration(mContext, layoutManager.height)
         binding.rvListUser.addItemDecoration(itemDecoration)
     }
 

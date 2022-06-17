@@ -29,7 +29,7 @@ class ListUserAdapter(private val mContext : Context ,private val listUsers  : L
             .load(listUsers[position].avatarUrl)
             .into(holder.imgAvatar)
         holder.itemMain.setOnClickListener {
-            Log.d(GlobalVariable.TAG, "onBindViewHolder: ${listUsers[position].login}")
+            Log.d(GlobalVariable.TAG, "onClick: ${listUsers[position].login}")
         }
     }
 
