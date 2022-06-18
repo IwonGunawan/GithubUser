@@ -5,7 +5,7 @@ class GlobalVariable {
     companion object{
         const val endPoint : String = "https://api.github.com/"
         const val headerAccept : String = "application/vnd.github.v3+json"
-        const val headerAuth : String = "token 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" // expired until 17 August 2022
+        const val headerAuth : String = "token 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" // expired until 17 August 2022
 
         const val TAG : String = "githubUserApp"
         const val GRAPH_USERNAME : String = "username"
