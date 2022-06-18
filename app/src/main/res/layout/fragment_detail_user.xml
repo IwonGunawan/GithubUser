@@ -1,20 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     tools:context=".page.DetailUserFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/example_lbl_detail"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginLeft="12dp"
+       android:layout_marginTop="8dp"
+       android:layout_marginRight="12dp"
+       android:layout_marginBottom="8dp"
+       android:background="@drawable/bg_detail_user">
+
+      <androidx.constraintlayout.widget.Guideline
+          android:id="@+id/guideline2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          app:layout_constraintGuide_percent="0.5" />
+
+      <androidx.constraintlayout.widget.Guideline
+          android:id="@+id/guideline3"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          app:layout_constraintGuide_percent="0.15" />
+
+      <de.hdodenhof.circleimageview.CircleImageView
+          android:id="@+id/img_avatar"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <TextView
+          android:id="@+id/tv_username"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:textSize="12sp"
+          app:layout_constraintEnd_toEndOf="@+id/tv_name"
+          app:layout_constraintStart_toStartOf="@+id/tv_name"
+          app:layout_constraintTop_toBottomOf="@+id/tv_name"
+          tools:text="userName" />
+
+      <TextView
+          android:id="@+id/tv_name"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="16dp"
+          android:textColor="@color/colorPrimary"
+          android:textSize="16sp"
+          android:textStyle="bold"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/img_avatar"
+          app:layout_constraintTop_toTopOf="@+id/img_avatar"
+          tools:text="FullName" />
 
 
+      <TextView
+          android:id="@+id/textView"
+          style="@style/field"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:text="@string/lbl_company"
+          app:layout_constraintEnd_toStartOf="@+id/guideline2"
+          app:layout_constraintStart_toStartOf="@+id/img_avatar"
+          app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+      <TextView
+          android:id="@+id/tv_company"
+          style="@style/value"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="@+id/textView"
+          app:layout_constraintStart_toStartOf="@+id/textView"
+          app:layout_constraintTop_toBottomOf="@+id/textView"
+          tools:text="@string/example_lbl_detail" />
+
+      <TextView
+          android:id="@+id/tv_blog"
+          style="@style/value"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="@+id/textView2"
+          app:layout_constraintStart_toStartOf="@+id/textView2"
+          app:layout_constraintTop_toBottomOf="@+id/textView2"
+          tools:text="@string/example_lbl_detail" />
+
+      <TextView
+          android:id="@+id/tv_location"
+          style="@style/value"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="@+id/textView"
+          app:layout_constraintStart_toStartOf="@+id/textView"
+          app:layout_constraintTop_toBottomOf="@+id/textView3"
+          tools:text="@string/example_lbl_detail" />
+
+      <TextView
+          android:id="@+id/tv_email"
+          style="@style/value"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="@+id/textView4"
+          app:layout_constraintStart_toStartOf="@+id/textView4"
+          app:layout_constraintTop_toBottomOf="@+id/textView4"
+          tools:text="@string/example_lbl_detail" />
+
+      <TextView
+          android:id="@+id/tv_bio"
+          style="@style/value"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="@+id/textView"
+          app:layout_constraintStart_toStartOf="@+id/textView"
+          app:layout_constraintTop_toBottomOf="@+id/textView5"
+          tools:text="@string/example_lbl_detail" />
+
+      <TextView
+          android:id="@+id/tv_twitter"
+          style="@style/value"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="@+id/textView2"
+          app:layout_constraintStart_toStartOf="@+id/textView2"
+          app:layout_constraintTop_toBottomOf="@+id/textView6"
+          tools:text="@string/example_lbl_detail" />
+
+      <TextView
+          android:id="@+id/textView2"
+          style="@style/field"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="8dp"
+          android:text="@string/lbl_blog"
+          app:layout_constraintEnd_toEndOf="@+id/tv_name"
+          app:layout_constraintStart_toStartOf="@+id/guideline2"
+          app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+      <TextView
+          android:id="@+id/textView3"
+          style="@style/field"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/lbl_location"
+          app:layout_constraintEnd_toEndOf="@+id/textView"
+          app:layout_constraintStart_toStartOf="@+id/textView"
+          app:layout_constraintTop_toBottomOf="@+id/tv_company" />
+
+      <TextView
+          android:id="@+id/textView4"
+          style="@style/field"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/lbl_email"
+          app:layout_constraintEnd_toEndOf="@+id/textView2"
+          app:layout_constraintStart_toStartOf="@+id/textView2"
+          app:layout_constraintTop_toBottomOf="@+id/tv_blog" />
+
+      <TextView
+          android:id="@+id/textView5"
+          style="@style/field"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/lbl_bio"
+          app:layout_constraintEnd_toEndOf="@+id/textView"
+          app:layout_constraintStart_toStartOf="@+id/textView"
+          app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+
+      <TextView
+          android:id="@+id/textView6"
+          style="@style/field"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/lbl_twitter"
+          app:layout_constraintEnd_toEndOf="@+id/textView2"
+          app:layout_constraintStart_toStartOf="@+id/textView2"
+          app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+
+      <LinearLayout
+          android:id="@+id/follower"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="8dp"
+          android:layout_marginBottom="16dp"
+          android:background="@drawable/btn_line"
+          android:orientation="vertical"
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/guideline2"
+          app:layout_constraintStart_toStartOf="parent">
+
+         <TextView
+             style="@style/field"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textAlignment="center"
+             android:text="@string/lbl_follower" />
+
+         <TextView
+             android:id="@+id/tv_follower"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textAlignment="center"
+             android:textSize="16sp"
+             android:textStyle="bold"
+             android:textColor="@color/colorPrimary"
+             tools:text="@string/example_lbl_number" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/following"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="8dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginBottom="16dp"
+          android:background="@drawable/btn_line"
+          android:orientation="vertical"
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="@+id/guideline2">
+
+         <TextView
+             style="@style/field"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="@string/lbl_following"
+             android:textAlignment="center" />
+
+         <TextView
+             android:id="@+id/tv_following"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textAlignment="center"
+             android:textColor="@color/colorPrimary"
+             android:textSize="16sp"
+             android:textStyle="bold"
+             tools:text="@string/example_lbl_number" />
+      </LinearLayout>
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

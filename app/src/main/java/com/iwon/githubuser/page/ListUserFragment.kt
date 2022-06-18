@@ -53,8 +53,8 @@ class ListUserFragment : Fragment() {
         val layoutManager = GridLayoutManager(mContext, 2)
         binding.rvListUser.layoutManager = layoutManager
 
-        val itemDecoration = DividerItemDecoration(mContext, layoutManager.height)
-        binding.rvListUser.addItemDecoration(itemDecoration)
+//        val itemDecoration = DividerItemDecoration(mContext, layoutManager.height)
+//        binding.rvListUser.addItemDecoration(itemDecoration)
     }
 
     private fun getListUsers(){
