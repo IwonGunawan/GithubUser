@@ -11,7 +11,7 @@ data class UserResponse(
 	val twitterUsername: String,
 
 	@field:SerializedName("bio")
-	val bio: Any,
+	val bio: String,
 
 	@field:SerializedName("login")
 	val login: String,

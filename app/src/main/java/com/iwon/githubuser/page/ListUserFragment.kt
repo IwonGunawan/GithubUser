@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iwon.githubuser.GlobalVariable
+import com.iwon.githubuser.R
 import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
@@ -25,7 +28,7 @@ class ListUserFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var mContext : Context
-    private lateinit var listUsers : List<ListUsersResponse>
+    //private lateinit var listUsers : List<ListUsersResponse>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,8 +56,8 @@ class ListUserFragment : Fragment() {
         val layoutManager = GridLayoutManager(mContext, 2)
         binding.rvListUser.layoutManager = layoutManager
 
-//        val itemDecoration = DividerItemDecoration(mContext, layoutManager.height)
-//        binding.rvListUser.addItemDecoration(itemDecoration)
+        //val itemDecoration = DividerItemDecoration(mContext, layoutManager.height)
+        //binding.rvListUser.addItemDecoration(itemDecoration)
     }
 
     private fun getListUsers(){
@@ -68,9 +71,7 @@ class ListUserFragment : Fragment() {
                 response: Response<List<ListUsersResponse>>
             ) {
                 if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
-                    listUsers = response.body()!!
-                    val adapter = ListUserAdapter(mContext, listUsers)
-                    binding.rvListUser.adapter = adapter
+                    loadData(response.body()!!)
                 }else{
                     defaultError()
                 }
@@ -82,7 +83,28 @@ class ListUserFragment : Fragment() {
         })
     }
 
-    private fun defaultError() {
+    private fun loadData(data : List<ListUsersResponse>){
+        val adapter = ListUserAdapter(mContext, data)
+        binding.rvListUser.adapter = adapter
 
+        adapter.callbackListener = object : ListUserAdapter.CallbackListener{
+            override fun onClick(user: ListUsersResponse) {
+                Log.d(GlobalVariable.TAG, "onClick: ${user.login}")
+                val bundle = Bundle()
+                bundle.putString(GlobalVariable.GRAPH_USERNAME, user.login)
+                view?.findNavController()
+                    ?.navigate(R.id.action_listUserFragment_to_detailUserFragment, bundle)
+            }
+
+        }
+    }
+
+    private fun defaultError() {
+        Log.d(GlobalVariable.TAG, "defaultError:")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

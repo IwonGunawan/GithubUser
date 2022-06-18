@@ -15,6 +15,9 @@ import com.iwon.githubuser.api.response.ListUsersResponse
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ListUserAdapter(private val mContext : Context ,private val listUsers  : List<ListUsersResponse>) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
+
+    var callbackListener : CallbackListener? = null
+
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         val itemMain : ConstraintLayout = view.findViewById(R.id.item_main)
         val imgAvatar : CircleImageView = view.findViewById(R.id.img_avatar)
@@ -28,10 +31,15 @@ class ListUserAdapter(private val mContext : Context ,private val listUsers  : L
         Glide.with(mContext)
             .load(listUsers[position].avatarUrl)
             .into(holder.imgAvatar)
+
         holder.itemMain.setOnClickListener {
-            Log.d(GlobalVariable.TAG, "onClick: ${listUsers[position].login}")
+            callbackListener?.onClick(listUsers[position])
         }
     }
 
     override fun getItemCount() = listUsers.size
+
+    interface CallbackListener{
+        fun onClick(user : ListUsersResponse)
+    }
 }
