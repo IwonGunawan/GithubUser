@@ -32,7 +32,8 @@ interface ApiService {
     @GET("users/{username}/following")
     fun getFollowing(
         @Header("Accept") accept: String,
-        @Header("Authorization") auth: String
+        @Header("Authorization") auth: String,
+        @Path("username") username: String
     ) : Call<List<ListUsersResponse>>
 
 }

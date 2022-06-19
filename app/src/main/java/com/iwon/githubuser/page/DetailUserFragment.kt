@@ -43,11 +43,8 @@ class DetailUserFragment : Fragment() {
         val username = arguments?.getString(GlobalVariable.GRAPH_USERNAME).toString()
         getDetail(username)
 
-        binding.follower.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString(GlobalVariable.GRAPH_USERNAME, username)
-            view?.findNavController()?.navigate(R.id.action_detailUserFragment_to_multiPageFragment, bundle)
-        }
+        binding.follower.setOnClickListener{ toMultiPage(username) }
+        binding.following.setOnClickListener { toMultiPage(username) }
     }
 
     private fun getDetail(username : String){
@@ -74,7 +71,6 @@ class DetailUserFragment : Fragment() {
     }
 
     private fun loadData(user : UserResponse){
-        Log.d(GlobalVariable.TAG, "loadData: ${user.name} ")
         Glide.with(mContext)
             .load(user.avatarUrl)
             .into(binding.imgAvatar)
@@ -96,6 +92,12 @@ class DetailUserFragment : Fragment() {
             value
         }
         return data
+    }
+
+    private fun toMultiPage(username : String){
+        val bundle = Bundle()
+        bundle.putString(GlobalVariable.GRAPH_USERNAME, username)
+        view?.findNavController()?.navigate(R.id.action_detailUserFragment_to_multiPageFragment, bundle)
     }
 
     private fun defaultError(){
