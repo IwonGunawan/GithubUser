@@ -8,7 +8,12 @@
         <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/drawable/btn_line.xml" value="0.219" />
         <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/fragment_detail_user.xml" value="0.264" />
+        <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/fragment_follower.xml" value="0.2526041666666667" />
+        <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/fragment_following.xml" value="0.2526041666666667" />
         <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/fragment_list_user.xml" value="0.2526041666666667" />
+        <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/fragment_multi_page.xml" value="0.2526041666666667" />
+        <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/item_follower.xml" value="0.2515625" />
+        <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/item_following.xml" value="0.2515625" />
         <entry key="..\:/_move/workspace/GithubUserApp2/app/src/main/res/layout/item_main.xml" value="0.2" />
       </map>
     </option>

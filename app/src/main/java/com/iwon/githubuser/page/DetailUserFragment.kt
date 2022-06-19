@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.iwon.githubuser.GlobalVariable
+import com.iwon.githubuser.R
 import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.UserResponse
 import com.iwon.githubuser.databinding.FragmentDetailUserBinding
@@ -40,6 +42,12 @@ class DetailUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val username = arguments?.getString(GlobalVariable.GRAPH_USERNAME).toString()
         getDetail(username)
+
+        binding.follower.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(GlobalVariable.GRAPH_USERNAME, username)
+            view?.findNavController()?.navigate(R.id.action_detailUserFragment_to_multiPageFragment, bundle)
+        }
     }
 
     private fun getDetail(username : String){

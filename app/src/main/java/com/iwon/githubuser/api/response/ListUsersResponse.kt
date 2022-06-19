@@ -13,6 +13,6 @@ data class ListUsersResponse(
 	@field:SerializedName("login")
 	val login: String,
 
-	@field:SerializedName("url")
+	@field:SerializedName("html_url")
 	val url: String
 )

@@ -19,5 +19,15 @@
         android:id="@+id/detailUserFragment"
         android:name="com.iwon.githubuser.page.DetailUserFragment"
         android:label="fragment_detail_user"
-        tools:layout="@layout/fragment_detail_user" />
+        tools:layout="@layout/fragment_detail_user" >
+        <action
+            android:id="@+id/action_detailUserFragment_to_multiPageFragment"
+            app:destination="@id/multiPageFragment"
+            app:popUpTo="@id/detailUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/multiPageFragment"
+        android:name="com.iwon.githubuser.page.MultiPageFragment"
+        android:label="fragment_multi_page"
+        tools:layout="@layout/fragment_multi_page" />
 </navigation>

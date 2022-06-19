@@ -18,8 +18,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_avatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/circle_img_width"
+            android:layout_height="@dimen/circle_img_height"
             android:layout_centerInParent="true"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
