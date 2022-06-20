@@ -2,6 +2,7 @@ package com.iwon.githubuser.page
 
 import android.app.SearchManager
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.iwon.githubuser.GlobalVariable
 import com.iwon.githubuser.MainActivity
 import com.iwon.githubuser.R
@@ -55,12 +57,13 @@ class ListUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mActivity = activity as MainActivity
 
+        showLoading()
         setup()
         getListUsers()
     }
 
     private fun setup(){
-        val layoutManager = GridLayoutManager(mContext, 2)
+        val layoutManager = GridLayoutManager(mContext, 3)
         binding.rvListUser.layoutManager = layoutManager
     }
 
@@ -88,6 +91,7 @@ class ListUserFragment : Fragment() {
     }
 
     private fun loadData(data : List<ListUsersResponse>){
+        hideLoading()
         val adapter = ListUserAdapter(mContext, data)
         binding.rvListUser.adapter = adapter
 
@@ -101,10 +105,6 @@ class ListUserFragment : Fragment() {
             }
 
         }
-    }
-
-    private fun defaultError() {
-        Toast.makeText(mContext, mContext.resources.getString(R.string.error_5_x_x), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -125,7 +125,10 @@ class ListUserFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText?.length!! >= 3){
+                    showLoading()
                     searchUser(newText)
+                }else if (newText?.length!! == 0){
+                    getListUsers()
                 }
                 return true
             }
@@ -160,6 +163,23 @@ class ListUserFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun showLoading(){
+        Glide.with(mContext)
+            .asGif()
+            .load(R.drawable.loading)
+            .into(binding.ivLoading)
+        binding.ivLoading.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading(){
+        binding.ivLoading.visibility = View.GONE
+    }
+
+    private fun defaultError() {
+        hideLoading()
+        Toast.makeText(mContext, mContext.resources.getString(R.string.error_5_x_x), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

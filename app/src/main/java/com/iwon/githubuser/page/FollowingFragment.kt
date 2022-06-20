@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.iwon.githubuser.GlobalVariable
 import com.iwon.githubuser.R
 import com.iwon.githubuser.api.ApiConfig
@@ -43,6 +45,7 @@ class FollowingFragment(private val username : String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showLoading()
         setup()
         getListFollowing()
     }
@@ -80,12 +83,26 @@ class FollowingFragment(private val username : String) : Fragment() {
     }
 
     private fun loadData(list : List<ListUsersResponse>){
+        hideLoading()
         val adapter = FollowingAdapter(mContext, list)
         binding.rvFollowing.adapter = adapter
     }
 
-    private fun defaultError(){
-        Log.d(GlobalVariable.TAG, "defaultError: ")
+    private fun showLoading(){
+        Glide.with(mContext)
+            .asGif()
+            .load(R.drawable.loading)
+            .into(binding.ivLoading)
+        binding.ivLoading.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading(){
+        binding.ivLoading.visibility = View.GONE
+    }
+
+    private fun defaultError() {
+        hideLoading()
+        Toast.makeText(mContext, mContext.resources.getString(R.string.error_5_x_x), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
