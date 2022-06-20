@@ -1,25 +1,27 @@
 package com.iwon.githubuser.page
 
+import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.iwon.githubuser.GlobalVariable
 import com.iwon.githubuser.MainActivity
 import com.iwon.githubuser.R
 import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.ListUsersResponse
+import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
 import com.iwon.githubuser.page.adapter.ListUserAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.StringBuilder
 
 class ListUserFragment : Fragment() {
 
@@ -32,6 +34,11 @@ class ListUserFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -55,9 +62,6 @@ class ListUserFragment : Fragment() {
     private fun setup(){
         val layoutManager = GridLayoutManager(mContext, 2)
         binding.rvListUser.layoutManager = layoutManager
-
-        //val itemDecoration = DividerItemDecoration(mContext, layoutManager.height)
-        //binding.rvListUser.addItemDecoration(itemDecoration)
     }
 
     private fun getListUsers(){
@@ -100,15 +104,62 @@ class ListUserFragment : Fragment() {
     }
 
     private fun defaultError() {
-        Log.d(GlobalVariable.TAG, "defaultError:")
+        Toast.makeText(mContext, mContext.resources.getString(R.string.error_5_x_x), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val inflater = activity?.menuInflater
-        inflater?.inflate(R.menu.option_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
 
+        val menuInflater = activity?.menuInflater
+        menuInflater?.inflate(R.menu.option_menu, menu)
 
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu?.findItem(R.id.menu_search)?.actionView as SearchView
 
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+        searchView.queryHint = this.resources.getString(R.string.search_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText?.length!! >= 3){
+                    searchUser(newText)
+                }
+                return true
+            }
+
+        })
+    }
+
+    private fun searchUser(query: String?){
+        val call = ApiConfig.getApiService().searchUser(
+            GlobalVariable.headerAuth,
+            query.toString()
+        )
+        call.enqueue(object : Callback<UserSearchResponse>{
+            override fun onResponse(
+                call: Call<UserSearchResponse>,
+                response: Response<UserSearchResponse>
+            ) {
+                if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
+                    val totalCount = response.body()!!.totalCount.toString()
+                    val items = response.body()!!.items
+                    val msg = StringBuilder(mContext.resources.getString(R.string.search_found)).append(totalCount)
+
+                    loadData(items)
+                    //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                }else{
+                    defaultError()
+                }
+            }
+
+            override fun onFailure(call: Call<UserSearchResponse>, t: Throwable) {
+                defaultError()
+            }
+
+        })
     }
 
     override fun onDestroy() {

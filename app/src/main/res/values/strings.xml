@@ -17,7 +17,9 @@
     <string name="lbl_search">Search</string>
 
     <string name="menu_1">Search</string>
-    <string name="menu_2">List</string>
+    <string name="search_hint">Search By username</string>
+    <string name="search_found">Data Found : </string>
+    <string name="error_5.x.x">Internal Server Error</string>
 
 
     <string name="example_lbl_list">List user</string>

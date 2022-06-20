@@ -2,10 +2,12 @@ package com.iwon.githubuser.api
 
 import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.api.response.UserResponse
+import com.iwon.githubuser.api.response.UserSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -35,5 +37,11 @@ interface ApiService {
         @Header("Authorization") auth: String,
         @Path("username") username: String
     ) : Call<List<ListUsersResponse>>
+
+    @GET("search/users")
+    fun searchUser(
+        @Header("Authorization") auth: String,
+        @Query("q") q: String
+    ) : Call<UserSearchResponse>
 
 }
