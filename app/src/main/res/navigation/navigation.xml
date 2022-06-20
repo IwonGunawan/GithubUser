@@ -23,7 +23,7 @@
         <action
             android:id="@+id/action_detailUserFragment_to_multiPageFragment"
             app:destination="@id/multiPageFragment"
-            app:popUpTo="@id/detailUserFragment" />
+            app:popUpTo="@id/listUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/multiPageFragment"

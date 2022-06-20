@@ -3,16 +3,15 @@ package com.iwon.githubuser.page
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iwon.githubuser.GlobalVariable
+import com.iwon.githubuser.MainActivity
 import com.iwon.githubuser.R
 import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.ListUsersResponse
@@ -28,7 +27,7 @@ class ListUserFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var mContext : Context
-    //private lateinit var listUsers : List<ListUsersResponse>
+    private lateinit var mActivity : MainActivity
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,6 +46,7 @@ class ListUserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mActivity = activity as MainActivity
 
         setup()
         getListUsers()
@@ -101,6 +101,14 @@ class ListUserFragment : Fragment() {
 
     private fun defaultError() {
         Log.d(GlobalVariable.TAG, "defaultError:")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val inflater = activity?.menuInflater
+        inflater?.inflate(R.menu.option_menu, menu)
+
+
+
     }
 
     override fun onDestroy() {

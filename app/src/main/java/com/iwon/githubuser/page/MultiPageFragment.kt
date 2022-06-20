@@ -23,14 +23,12 @@ class MultiPageFragment : Fragment() {
             R.string.lbl_following
         )
     }
-
     private lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

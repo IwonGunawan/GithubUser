@@ -14,13 +14,14 @@
     <string name="lbl_following">Following</string>
     <string name="lbl_username">Username</string>
     <string name="lbl_html_url">Html Url</string>
+    <string name="lbl_search">Search</string>
+
+    <string name="menu_1">Search</string>
+    <string name="menu_2">List</string>
+
 
     <string name="example_lbl_list">List user</string>
     <string name="example_lbl_detail">Hello this page detail user</string>
     <string name="example_lbl_number">4789</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
 
 </resources>
