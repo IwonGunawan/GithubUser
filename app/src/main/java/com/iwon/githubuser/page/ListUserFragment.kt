@@ -1,11 +1,15 @@
 package com.iwon.githubuser.page
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.opengl.Visibility
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -80,12 +84,16 @@ class ListUserFragment : Fragment() {
                 if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
                     loadData(response.body()!!)
                 }else{
-                    defaultError()
+                    defaultError(null)
                 }
             }
 
             override fun onFailure(call: Call<List<ListUsersResponse>>, t: Throwable) {
-                defaultError()
+               if(GlobalVariable.isIOException(t)){
+                    defaultError(mContext.resources.getString(R.string.error_no_connection))
+               }else{
+                    defaultError(null)
+               }
             }
         })
     }
@@ -97,7 +105,6 @@ class ListUserFragment : Fragment() {
 
         adapter.callbackListener = object : ListUserAdapter.CallbackListener{
             override fun onClick(user: ListUsersResponse) {
-                Log.d(GlobalVariable.TAG, "onClick: ${user.login}")
                 val bundle = Bundle()
                 bundle.putString(GlobalVariable.GRAPH_USERNAME, user.login)
                 view?.findNavController()
@@ -154,12 +161,16 @@ class ListUserFragment : Fragment() {
                     loadData(items)
                     //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
                 }else{
-                    defaultError()
+                    defaultError(null)
                 }
             }
 
             override fun onFailure(call: Call<UserSearchResponse>, t: Throwable) {
-                defaultError()
+               if (GlobalVariable.isIOException(t)){
+                   defaultError(mContext.resources.getString(R.string.error_no_connection))
+               }else{
+                   defaultError(null)
+               }
             }
 
         })
@@ -177,9 +188,20 @@ class ListUserFragment : Fragment() {
         binding.ivLoading.visibility = View.GONE
     }
 
-    private fun defaultError() {
+    private fun defaultError(msg : String?) {
         hideLoading()
-        Toast.makeText(mContext, mContext.resources.getString(R.string.error_5_x_x), Toast.LENGTH_SHORT).show()
+        val message = msg ?: mContext.resources.getString(R.string.error_5_x_x)
+
+        val builder = AlertDialog.Builder(mContext).create()
+        val view  = layoutInflater.inflate(R.layout.dialog, null)
+        val tvMsg = view.findViewById<TextView>(R.id.tv_msg)
+        val btnOk = view.findViewById<Button>(R.id.btn_ok)
+
+        builder.setView(view)
+        tvMsg.text = message
+        btnOk.setOnClickListener { builder.dismiss() }
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
     }
 
     override fun onDestroy() {
