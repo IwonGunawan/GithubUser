@@ -127,14 +127,13 @@ class ListUserFragment : Fragment() {
         searchView.queryHint = this.resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+                showLoading()
+                searchUser(query)
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText?.length!! >= 3){
-                    showLoading()
-                    searchUser(newText)
-                }else if (newText?.length!! == 0){
+                if(newText?.length == 0){
                     getListUsers()
                 }
                 return true

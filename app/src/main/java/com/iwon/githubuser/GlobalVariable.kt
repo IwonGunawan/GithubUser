@@ -1,16 +1,11 @@
 package com.iwon.githubuser
 
-import android.app.AlertDialog
-import android.content.Context
-import android.widget.Button
-import android.widget.TextView
-
 class GlobalVariable {
 
     companion object{
         const val endPoint : String = "https://api.github.com/"
         const val headerAccept : String = "application/vnd.github.v3+json"
-        const val headerAuth : String = "token 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" // expired until 17 August 2022
+        const val headerAuth : String = "token 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" // expired until 23 july 2022
 
         const val TAG : String = "githubUserApp"
         const val GRAPH_USERNAME : String = "username"
