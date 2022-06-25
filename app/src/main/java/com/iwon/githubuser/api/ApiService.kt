@@ -24,18 +24,12 @@ interface ApiService {
         @Path("username") username : String
     ) : Call<UserResponse>
 
-    @GET("users/{username}/followers")
-    fun getFollowers(
+    @GET("users/{username}/{type}")
+    fun getFollow(
         @Header("Accept") accept: String,
         @Header("Authorization") auth: String,
-        @Path("username") username: String
-    ) : Call<List<ListUsersResponse>>
-
-    @GET("users/{username}/following")
-    fun getFollowing(
-        @Header("Accept") accept: String,
-        @Header("Authorization") auth: String,
-        @Path("username") username: String
+        @Path("username") username: String,
+        @Path("type") type: String
     ) : Call<List<ListUsersResponse>>
 
     @GET("search/users")

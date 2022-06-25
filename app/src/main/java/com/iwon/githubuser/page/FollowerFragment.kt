@@ -59,10 +59,11 @@ class FollowerFragment(private val username : String) : Fragment() {
     }
 
     private fun getListFollowers(){
-        val call = ApiConfig.getApiService().getFollowers(
+        val call = ApiConfig.getApiService().getFollow(
             GlobalVariable.headerAccept,
             GlobalVariable.headerAuth,
-            username
+            username,
+            GlobalVariable.sFOLLOWERS
         )
         call.enqueue(object : Callback<List<ListUsersResponse>>{
             override fun onResponse(

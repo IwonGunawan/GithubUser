@@ -8,6 +8,8 @@ class GlobalVariable {
         const val headerAuth : String = "token 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" // expired until 23 july 2022
 
         const val TAG : String = "githubUserApp"
+        const val sFOLLOWERS : String = "followers"
+        const val sFOLLOWING : String = "following"
         const val GRAPH_USERNAME : String = "username"
         const val iRESPONSE_OK: Int = 200
 
