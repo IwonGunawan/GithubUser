@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.iwon.githubuser.GlobalVariable
+import com.iwon.githubuser.GlobalVariable.Companion.loadImage
 import com.iwon.githubuser.R
 import com.iwon.githubuser.api.response.ListUsersResponse
 import de.hdodenhof.circleimageview.CircleImageView
@@ -26,10 +28,7 @@ class ListUserAdapter(private val mContext : Context ,private val listUsers  : L
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tvName.text = listUsers[position].login
-        Glide.with(mContext)
-            .load(listUsers[position].avatarUrl)
-            .into(holder.imgAvatar)
-
+        holder.imgAvatar.loadImage(listUsers[position].avatarUrl)
         holder.itemMain.setOnClickListener {
             callbackListener?.onClick(listUsers[position])
         }

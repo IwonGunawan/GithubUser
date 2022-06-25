@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.iwon.githubuser.GlobalVariable
+import com.iwon.githubuser.GlobalVariable.Companion.loadImage
 import com.iwon.githubuser.R
 import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.UserResponse
@@ -78,9 +79,8 @@ class DetailUserFragment : Fragment() {
 
     private fun loadData(user : UserResponse){
         hideLoading()
-        Glide.with(mContext)
-            .load(user.avatarUrl)
-            .into(binding.imgAvatar)
+
+        binding.imgAvatar.loadImage(user.avatarUrl)
         binding.tvName.text = changeNullToStr(user.name)
         binding.tvUsername.text = user.login
         binding.tvCompany.text = user.company
