@@ -1,9 +1,11 @@
 package com.iwon.githubuser.page.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,7 @@ class ListUserAdapter(private val mContext : Context ,private val listUsers  : L
         val itemMain : ConstraintLayout = view.findViewById(R.id.item_main)
         val imgAvatar : CircleImageView = view.findViewById(R.id.img_avatar)
         val tvName : TextView = view.findViewById(R.id.tv_name)
+        val ivFavorite : ImageView = view.findViewById(R.id.iv_favorite)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_main, parent, false))
@@ -32,6 +35,7 @@ class ListUserAdapter(private val mContext : Context ,private val listUsers  : L
         holder.itemMain.setOnClickListener {
             callbackListener?.onClick(listUsers[position])
         }
+        holder.ivFavorite.setOnClickListener { Log.d(GlobalVariable.TAG, "onBindViewHolder: this favofite") }
     }
 
     override fun getItemCount() = listUsers.size

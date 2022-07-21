@@ -44,7 +44,5 @@ class GlobalVariable {
                 .centerCrop()
                 .into(this)
         }
-
-
-    }
+    } // END
 }

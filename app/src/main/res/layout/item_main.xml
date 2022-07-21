@@ -25,6 +25,15 @@
             android:layout_marginBottom="16dp"
             app:civ_border_color="#FF909090"
             app:civ_border_width="2dp" />
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="@dimen/favorite_img_width"
+            android:layout_height="@dimen/favorite_img_height"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_favorite_white" />
     </RelativeLayout>
 
     <TextView
