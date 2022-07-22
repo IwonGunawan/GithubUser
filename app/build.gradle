@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -14,7 +16,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "KEY_TOKEN", '"token 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"')
+        buildConfigField("String", "KEY_TOKEN", '"token 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"')
     }
 
     buildTypes {
@@ -63,4 +65,13 @@ dependencies {
     // tab layout
     implementation 'com.google.android.material:material:1.3.1'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // card view
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    // handle local db : room and livedata
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
+    implementation 'androidx.room:room-runtime:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
 }
