@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -19,10 +22,14 @@ import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
+import com.iwon.githubuser.db.entity.Favorite
+import com.iwon.githubuser.helper.ViewModelFactory
 import com.iwon.githubuser.page.adapter.ListUserAdapter
+import com.iwon.githubuser.page.viewModel.FavoriteViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 class ListUserFragment : Fragment() {
 
@@ -31,6 +38,8 @@ class ListUserFragment : Fragment() {
 
     private lateinit var mContext : Context
     private lateinit var mActivity : MainActivity
+    private lateinit var mFavoriteViewModel : FavoriteViewModel
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,6 +49,8 @@ class ListUserFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        mActivity = activity as MainActivity
+        mFavoriteViewModel = obtainViewModel(mActivity)
     }
 
     override fun onCreateView(
@@ -54,7 +65,6 @@ class ListUserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mActivity = activity as MainActivity
 
         showLoading()
         setup()
@@ -106,6 +116,15 @@ class ListUserFragment : Fragment() {
                     ?.navigate(R.id.action_listUserFragment_to_detailUserFragment, bundle)
             }
 
+            override fun onFavorite(user: ListUsersResponse) {
+                var favorite : Favorite? = Favorite(
+                    userId = user.id,
+                    userName = user.login,
+                    avatarUrl = user.avatarUrl,
+                    linkUrl = user.url)
+                mFavoriteViewModel.insert(favorite as Favorite)
+            }
+
         }
     }
 
@@ -150,7 +169,7 @@ class ListUserFragment : Fragment() {
                 if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
                     val totalCount = response.body()!!.totalCount.toString()
                     val items = response.body()!!.items
-                    val msg = StringBuilder(mContext.resources.getString(R.string.search_found)).append(totalCount)
+                    //val msg = StringBuilder(mContext.resources.getString(R.string.search_found)).append(totalCount)
 
                     loadData(items)
                     //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
@@ -168,6 +187,12 @@ class ListUserFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity) : FavoriteViewModel{
+        Log.d(GlobalVariable.TAG, "connect listUserFragment with viewModel")
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory).get(FavoriteViewModel::class.java)
     }
 
     private fun showLoading(){

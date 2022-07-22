@@ -14,9 +14,11 @@ import com.iwon.githubuser.GlobalVariable
 import com.iwon.githubuser.GlobalVariable.Companion.loadImage
 import com.iwon.githubuser.R
 import com.iwon.githubuser.api.response.ListUsersResponse
+import com.iwon.githubuser.db.entity.Favorite
+import com.iwon.githubuser.page.viewModel.FavoriteViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class ListUserAdapter(private val mContext : Context ,private val listUsers  : List<ListUsersResponse>) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
+class ListUserAdapter(private val mContext: Context ,private val listUsers: List<ListUsersResponse>) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
 
     var callbackListener : CallbackListener? = null
 
@@ -30,17 +32,22 @@ class ListUserAdapter(private val mContext : Context ,private val listUsers  : L
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_main, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvName.text = listUsers[position].login
-        holder.imgAvatar.loadImage(listUsers[position].avatarUrl)
+        val data = listUsers[position]
+
+        holder.tvName.text = data.login
+        holder.imgAvatar.loadImage(data.avatarUrl)
         holder.itemMain.setOnClickListener {
-            callbackListener?.onClick(listUsers[position])
+            callbackListener?.onClick(data)
         }
-        holder.ivFavorite.setOnClickListener { Log.d(GlobalVariable.TAG, "onBindViewHolder: this favofite") }
+        holder.ivFavorite.setOnClickListener {
+            callbackListener?.onFavorite(data)
+        }
     }
 
     override fun getItemCount() = listUsers.size
 
     interface CallbackListener{
         fun onClick(user : ListUsersResponse)
+        fun onFavorite(user : ListUsersResponse)
     }
 }
