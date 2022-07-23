@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.iwon.githubuser.db.dao.FavoriteDao
-import com.iwon.githubuser.db.entity.Favorite
+import com.iwon.githubuser.db.dao.UserDao
+import com.iwon.githubuser.db.entity.UserEntity
 
-@Database(entities = [Favorite::class], version = 1)
+@Database(entities = [UserEntity::class], version = 1, exportSchema = false)
 abstract class GithubUserDB : RoomDatabase() {
 
-    abstract fun favoriteDao() : FavoriteDao
+    abstract fun userDao() : UserDao
 
     companion object{
         @Volatile

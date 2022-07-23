@@ -4,14 +4,13 @@ import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -22,14 +21,14 @@ import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
-import com.iwon.githubuser.db.entity.Favorite
+import com.iwon.githubuser.helper.Result
 import com.iwon.githubuser.helper.ViewModelFactory
 import com.iwon.githubuser.page.adapter.ListUserAdapter
-import com.iwon.githubuser.page.viewModel.FavoriteViewModel
+import com.iwon.githubuser.page.adapter.SearchUserAdapter
+import com.iwon.githubuser.page.viewModel.ListUserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 class ListUserFragment : Fragment() {
 
@@ -38,7 +37,7 @@ class ListUserFragment : Fragment() {
 
     private lateinit var mContext : Context
     private lateinit var mActivity : MainActivity
-    private lateinit var mFavoriteViewModel : FavoriteViewModel
+    private lateinit var listUserAdapter: ListUserAdapter
 
 
     override fun onAttach(context: Context) {
@@ -50,7 +49,6 @@ class ListUserFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         mActivity = activity as MainActivity
-        mFavoriteViewModel = obtainViewModel(mActivity)
     }
 
     override fun onCreateView(
@@ -60,71 +58,61 @@ class ListUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentListUserBinding.inflate(inflater, container, false)
+        listUserAdapter = ListUserAdapter{}
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        showLoading()
-        setup()
-        getListUsers()
+        getListUser()
     }
 
-    private fun setup(){
-        val layoutManager = GridLayoutManager(mContext, 3)
-        binding.rvListUser.layoutManager = layoutManager
-    }
+    private fun getListUser(){
+        val factory : ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
+        val viewModel : ListUserViewModel by viewModels { factory }
 
-    private fun getListUsers(){
-        val call = ApiConfig.getApiService().getListUsers(
-            GlobalVariable.headerAccept,
-            GlobalVariable.headerAuth
-        )
-        call.enqueue(object : Callback<List<ListUsersResponse>>{
-            override fun onResponse(
-                call: Call<List<ListUsersResponse>>,
-                response: Response<List<ListUsersResponse>>
-            ) {
-                if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
-                    loadData(response.body()!!)
-                }else{
-                    defaultError(null)
+        viewModel.getListUser().observe(viewLifecycleOwner, { result ->
+            if (result != null){
+                when(result){
+                    is Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        val userData = result.data
+                        listUserAdapter.submitList(userData)
+                    }
+                    is Result.Error -> {
+                        hideLoading()
+                        var msg = "Terjadi kesalahan ${result.error.message.toString()}"
+                        if (GlobalVariable.isIOException(result.error)){
+                            msg = mContext.resources.getString(R.string.error_no_connection)
+                        }
+                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-
-            override fun onFailure(call: Call<List<ListUsersResponse>>, t: Throwable) {
-               if(GlobalVariable.isIOException(t)){
-                    defaultError(mContext.resources.getString(R.string.error_no_connection))
-               }else{
-                    defaultError(null)
-               }
-            }
         })
+
+        binding?.rvListUser?.apply {
+            layoutManager = GridLayoutManager(mContext, 3)
+            setHasFixedSize(true)
+            adapter = listUserAdapter
+        }
     }
 
     private fun loadData(data : List<ListUsersResponse>){
         hideLoading()
-        val adapter = ListUserAdapter(mContext, data)
+        val adapter = SearchUserAdapter(mContext, data)
         binding.rvListUser.adapter = adapter
 
-        adapter.callbackListener = object : ListUserAdapter.CallbackListener{
+        adapter.callbackListener = object : SearchUserAdapter.CallbackListener{
             override fun onClick(user: ListUsersResponse) {
                 val bundle = Bundle()
                 bundle.putString(GlobalVariable.GRAPH_USERNAME, user.login)
                 view?.findNavController()
                     ?.navigate(R.id.action_listUserFragment_to_detailUserFragment, bundle)
             }
-
-            override fun onFavorite(user: ListUsersResponse) {
-                var favorite : Favorite? = Favorite(
-                    userId = user.id,
-                    userName = user.login,
-                    avatarUrl = user.avatarUrl,
-                    linkUrl = user.url)
-                mFavoriteViewModel.insert(favorite as Favorite)
-            }
-
         }
     }
 
@@ -148,7 +136,7 @@ class ListUserFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText?.length == 0){
-                    getListUsers()
+                    getListUser()
                 }
                 return true
             }
@@ -169,10 +157,10 @@ class ListUserFragment : Fragment() {
                 if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
                     val totalCount = response.body()!!.totalCount.toString()
                     val items = response.body()!!.items
-                    //val msg = StringBuilder(mContext.resources.getString(R.string.search_found)).append(totalCount)
+                    val msg = StringBuilder(mContext.resources.getString(R.string.search_found)).append(totalCount)
 
                     loadData(items)
-                    //Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
                 }else{
                     defaultError(null)
                 }
@@ -187,12 +175,6 @@ class ListUserFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun obtainViewModel(activity: AppCompatActivity) : FavoriteViewModel{
-        Log.d(GlobalVariable.TAG, "connect listUserFragment with viewModel")
-        val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory).get(FavoriteViewModel::class.java)
     }
 
     private fun showLoading(){

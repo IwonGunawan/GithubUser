@@ -1,53 +1,69 @@
 package com.iwon.githubuser.page.adapter
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.iwon.githubuser.GlobalVariable
 import com.iwon.githubuser.GlobalVariable.Companion.loadImage
 import com.iwon.githubuser.R
-import com.iwon.githubuser.api.response.ListUsersResponse
-import com.iwon.githubuser.db.entity.Favorite
-import com.iwon.githubuser.page.viewModel.FavoriteViewModel
-import de.hdodenhof.circleimageview.CircleImageView
+import com.iwon.githubuser.databinding.ItemMainBinding
+import com.iwon.githubuser.db.entity.UserEntity
 
-class ListUserAdapter(private val mContext: Context ,private val listUsers: List<ListUsersResponse>) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
+class ListUserAdapter(private val onUserClick: (UserEntity) -> Unit) : ListAdapter<UserEntity, ListUserAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
-    var callbackListener : CallbackListener? = null
 
-    class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
-        val itemMain : ConstraintLayout = view.findViewById(R.id.item_main)
-        val imgAvatar : CircleImageView = view.findViewById(R.id.img_avatar)
-        val tvName : TextView = view.findViewById(R.id.tv_name)
-        val ivFavorite : ImageView = view.findViewById(R.id.iv_favorite)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val binding = ItemMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_main, parent, false))
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        var users = getItem(position)
+        holder.bind(users)
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data = listUsers[position]
-
-        holder.tvName.text = data.login
-        holder.imgAvatar.loadImage(data.avatarUrl)
-        holder.itemMain.setOnClickListener {
-            callbackListener?.onClick(data)
+        val ivFavorite = holder.binding.ivFavorite
+        if (users.isBoomark){
+            ivFavorite.setImageDrawable(ContextCompat.getDrawable(ivFavorite.context, R.drawable.ic_favorite_selected))
+        }else{
+            ivFavorite.setImageDrawable(ContextCompat.getDrawable(ivFavorite.context, R.drawable.ic_favorite_white))
         }
-        holder.ivFavorite.setOnClickListener {
-            callbackListener?.onFavorite(data)
+
+        ivFavorite.setOnClickListener {
+            onUserClick(users)
         }
     }
 
-    override fun getItemCount() = listUsers.size
+    class MyViewHolder(val binding: ItemMainBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(userEntity: UserEntity){
+            binding.tvName.text = userEntity.userName
+            binding.imgAvatar.loadImage(userEntity.avatarUrl)
+            binding.itemMain.setOnClickListener {
+                Log.d(GlobalVariable.TAG, "bind: onClick to detail page")
+            }
+        }
+
+    }
 
     interface CallbackListener{
-        fun onClick(user : ListUsersResponse)
-        fun onFavorite(user : ListUsersResponse)
+        fun onClick()
+    }
+
+    companion object{
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<UserEntity> =
+            object : DiffUtil.ItemCallback<UserEntity>(){
+                override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean {
+                    return oldItem.userId == newItem.userId
+                }
+
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean {
+                    return oldItem == newItem
+                }
+            }
     }
 }
