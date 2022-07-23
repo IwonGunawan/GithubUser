@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
@@ -21,6 +22,7 @@ import com.iwon.githubuser.api.ApiConfig
 import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
+import com.iwon.githubuser.db.entity.UserEntity
 import com.iwon.githubuser.helper.Result
 import com.iwon.githubuser.helper.ViewModelFactory
 import com.iwon.githubuser.page.adapter.ListUserAdapter
@@ -38,7 +40,6 @@ class ListUserFragment : Fragment() {
     private lateinit var mContext : Context
     private lateinit var mActivity : MainActivity
     private lateinit var listUserAdapter: ListUserAdapter
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,7 +59,6 @@ class ListUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentListUserBinding.inflate(inflater, container, false)
-        listUserAdapter = ListUserAdapter{}
         return binding.root
     }
 
@@ -69,9 +69,17 @@ class ListUserFragment : Fragment() {
 
     private fun getListUser(){
         val factory : ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val viewModel : ListUserViewModel by viewModels { factory }
+        val listUserViewModel : ListUserViewModel by viewModels { factory }
 
-        viewModel.getListUser().observe(viewLifecycleOwner, { result ->
+        listUserAdapter = ListUserAdapter{ userEntity ->
+            if (userEntity.isBoomark){
+                listUserViewModel.unBookmark(userEntity)
+            }else{
+                listUserViewModel.setBookmark(userEntity)
+            }
+        }
+
+        listUserViewModel.getListUser().observe(viewLifecycleOwner, { result ->
             if (result != null){
                 when(result){
                     is Result.Loading -> {
@@ -98,6 +106,12 @@ class ListUserFragment : Fragment() {
             layoutManager = GridLayoutManager(mContext, 3)
             setHasFixedSize(true)
             adapter = listUserAdapter
+
+            listUserAdapter.callbackListener = object : ListUserAdapter.CallbackListener{
+                override fun onClick(userEntity: UserEntity) {
+                    toDetailPage(userEntity.userName)
+                }
+            }
         }
     }
 
@@ -108,12 +122,16 @@ class ListUserFragment : Fragment() {
 
         adapter.callbackListener = object : SearchUserAdapter.CallbackListener{
             override fun onClick(user: ListUsersResponse) {
-                val bundle = Bundle()
-                bundle.putString(GlobalVariable.GRAPH_USERNAME, user.login)
-                view?.findNavController()
-                    ?.navigate(R.id.action_listUserFragment_to_detailUserFragment, bundle)
+                toDetailPage(user.login)
             }
         }
+    }
+
+    private fun toDetailPage(userName : String){
+        val bundle = Bundle()
+        bundle.putString(GlobalVariable.GRAPH_USERNAME, userName)
+        view?.findNavController()
+            ?.navigate(R.id.action_listUserFragment_to_detailUserFragment, bundle)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -63,6 +63,17 @@ class UserRepository private constructor(
         return result
     }
 
+    fun setBookmark(userEntity: UserEntity, bookmarkState : Boolean){
+        appExecutors.diskIO.execute {
+            userEntity.isBoomark = bookmarkState
+            userDao.updateUser(userEntity)
+        }
+    }
+
+    fun getBookmark() : LiveData<List<UserEntity>>{
+        return userDao.getBookmark()
+    }
+
     companion object{
         @Volatile
         private var instance : UserRepository?  = null

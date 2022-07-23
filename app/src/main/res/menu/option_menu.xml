@@ -13,7 +13,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_favorite"
-        android:icon="@drawable/ic_favorite_selected"
+        android:icon="@drawable/ic_favorite_white"
         android:title="@string/lbl_favorite"
         app:showAsAction="always" />
 

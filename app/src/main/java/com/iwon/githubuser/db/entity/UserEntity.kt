@@ -21,5 +21,5 @@ class UserEntity(
     val linkUrl : String,
 
     @field:ColumnInfo(name = "is_bookmark")
-    val isBoomark : Boolean
+    var isBoomark : Boolean
 )

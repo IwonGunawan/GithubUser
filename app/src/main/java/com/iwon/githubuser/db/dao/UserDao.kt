@@ -16,9 +16,15 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAllUser(listUser : List<UserEntity>)
 
+    @Update
+    fun updateUser(userEntity: UserEntity)
+
     @Query("DELETE FROM user WHERE 1")
     fun deleteAll()
 
     @Query("SELECT EXISTS(SELECT * FROM user WHERE user_id=:userId AND is_bookmark=1)")
     fun isBookmark(userId : Int) : Boolean
+
+    @Query("SELECT * FROM user WHERE is_bookmark=1")
+    fun getBookmark() : LiveData<List<UserEntity>>
 }
