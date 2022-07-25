@@ -23,7 +23,11 @@ class ListFavoriteAdapter(private val onFavorite : (UserEntity) -> Unit) : ListA
         holder.bind(users)
 
         val ivFavorite = holder.binding.ivFavorite
+        val ivRemove = holder.binding.ivRemove
         ivFavorite.setOnClickListener {
+            onFavorite(users)
+        }
+        ivRemove.setOnClickListener {
             onFavorite(users)
         }
     }
