@@ -9,9 +9,15 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -24,13 +30,19 @@ import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
 import com.iwon.githubuser.db.entity.UserEntity
 import com.iwon.githubuser.helper.Result
+import com.iwon.githubuser.helper.SettingFactory
+import com.iwon.githubuser.helper.SettingPreferences
 import com.iwon.githubuser.helper.ViewModelFactory
 import com.iwon.githubuser.page.adapter.ListUserAdapter
 import com.iwon.githubuser.page.adapter.SearchUserAdapter
 import com.iwon.githubuser.page.viewModel.ListUserViewModel
+import com.iwon.githubuser.page.viewModel.SettingViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+
+private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class ListUserFragment : Fragment() {
 
@@ -40,6 +52,9 @@ class ListUserFragment : Fragment() {
     private lateinit var mContext : Context
     private lateinit var mActivity : MainActivity
     private lateinit var listUserAdapter: ListUserAdapter
+    private lateinit var settingViewModel : SettingViewModel
+    private lateinit var lightMenu: MenuItem
+    private lateinit var darkMenu: MenuItem
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -142,6 +157,11 @@ class ListUserFragment : Fragment() {
 
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu?.findItem(R.id.menu_search)?.actionView as SearchView
+        lightMenu = menu?.findItem(R.id.menu_light_mode)!!
+        darkMenu = menu?.findItem(R.id.menu_dark_mode)!!
+
+        // setup
+        setupSettingPref()
 
         // search bar
         searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
@@ -169,11 +189,36 @@ class ListUserFragment : Fragment() {
                 view?.findNavController()?.navigate(R.id.action_listUserFragment_to_listBookmarkFragment)
                 return true
             }
+            R.id.menu_light_mode -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                settingViewModel.setTheme(true)
+                return true
+            }
             R.id.menu_dark_mode -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                settingViewModel.setTheme(false)
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupSettingPref(){
+        val preferences = SettingPreferences.getInstance(mContext.dataStore)
+        settingViewModel = ViewModelProvider(mActivity, SettingFactory(preferences)).get(
+            SettingViewModel::class.java
+        )
+        settingViewModel.getTheme().observe(mActivity, {isDarkMode ->
+            if (isDarkMode){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                lightMenu.setVisible(false)
+                darkMenu.setVisible(true)
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                lightMenu.setVisible(true)
+                darkMenu.setVisible(false)
+            }
+        })
     }
 
     private fun searchUser(query: String?){

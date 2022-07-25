@@ -14,6 +14,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/menu_light_mode"
+        android:icon="@drawable/ic_dark_mode"
+        android:title="@string/lbl_light_mode"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/menu_dark_mode"
         android:icon="@drawable/ic_light_mode"
         android:title="@string/lbl_dark_mode"

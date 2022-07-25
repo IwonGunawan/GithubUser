@@ -1,6 +1,7 @@
 package com.iwon.githubuser.page.adapter
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class SearchUserAdapter(private val mContext: Context, private val listUsers: Li
         holder.itemMain.setOnClickListener {
             callbackListener?.onClick(data)
         }
+        holder.ivFavorite.visibility = View.GONE
     }
 
     override fun getItemCount() = listUsers.size

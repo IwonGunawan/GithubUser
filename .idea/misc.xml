@@ -21,6 +21,7 @@
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/drawable/btn_line.xml" value="0.1385" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/drawable/ic_favorite_white.xml" value="0.1455" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/activity_main.xml" value="0.19010416666666666" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/custom_switch_mode.xml" value="0.203125" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/dialog.xml" value="0.25" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_detail_user.xml" value="0.20416666666666666" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_follower.xml" value="0.20416666666666666" />
@@ -30,8 +31,8 @@
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_list_user.xml" value="0.20416666666666666" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_favorite.xml" value="0.33" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_follower.xml" value="0.22" />
-        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_main.xml" value="0.33" />
-        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/menu/option_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/menu/option_menu.xml" value="0.25" />
       </map>
     </option>
   </component>

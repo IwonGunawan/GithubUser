@@ -69,9 +69,14 @@ dependencies {
     // card view
     implementation 'androidx.cardview:cardview:1.0.0'
 
-    // handle local db : room and livedata
+    // livedata
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
+
+    // room
     implementation 'androidx.room:room-runtime:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
+
+    // data store
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
