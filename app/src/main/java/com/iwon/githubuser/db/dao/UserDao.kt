@@ -26,5 +26,5 @@ interface UserDao {
     fun isBookmark(userId : Int) : Boolean
 
     @Query("SELECT * FROM user WHERE is_bookmark=1")
-    fun getBookmark() : LiveData<List<UserEntity>>
+    fun getFavorite() : LiveData<List<UserEntity>>
 }

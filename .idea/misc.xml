@@ -25,7 +25,11 @@
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_detail_user.xml" value="0.20416666666666666" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_follower.xml" value="0.20416666666666666" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_following.xml" value="0.20416666666666666" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_list_bookmark.xml" value="0.20416666666666666" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_list_favorite.xml" value="0.1" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/fragment_list_user.xml" value="0.20416666666666666" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_favorite.xml" value="0.33" />
+        <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_follower.xml" value="0.22" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/layout/item_main.xml" value="0.33" />
         <entry key="..\:/android/workspace/GithubUserApp/app/src/main/res/menu/option_menu.xml" value="0.20416666666666666" />
       </map>

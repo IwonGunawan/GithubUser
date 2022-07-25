@@ -6,15 +6,17 @@
         android:title="@string/lbl_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
-    <item
-        android:id="@+id/menu_dark_mode"
-        android:icon="@drawable/ic_light_mode"
-        android:title="@string/lbl_dark_mode"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/menu_favorite"
         android:icon="@drawable/ic_favorite_white"
         android:title="@string/lbl_favorite"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_dark_mode"
+        android:icon="@drawable/ic_light_mode"
+        android:title="@string/lbl_dark_mode"
         app:showAsAction="always" />
 
 </menu>

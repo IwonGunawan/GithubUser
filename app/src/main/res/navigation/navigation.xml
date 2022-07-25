@@ -14,6 +14,10 @@
             android:id="@+id/action_listUserFragment_to_detailUserFragment"
             app:destination="@id/detailUserFragment"
             app:popUpTo="@id/listUserFragment" />
+        <action
+            android:id="@+id/action_listUserFragment_to_listBookmarkFragment"
+            app:destination="@id/listFavoriteFragment"
+            app:popUpTo="@id/listUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailUserFragment"
@@ -30,4 +34,9 @@
         android:name="com.iwon.githubuser.page.MultiPageFragment"
         android:label="fragment_multi_page"
         tools:layout="@layout/fragment_multi_page" />
+    <fragment
+        android:id="@+id/listFavoriteFragment"
+        android:name="com.iwon.githubuser.page.ListFavoriteFragment"
+        android:label="fragment_list_favorite"
+        tools:layout="@layout/fragment_list_favorite" />
 </navigation>

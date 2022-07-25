@@ -63,15 +63,15 @@ class UserRepository private constructor(
         return result
     }
 
-    fun setBookmark(userEntity: UserEntity, bookmarkState : Boolean){
+    fun setFavorite(userEntity: UserEntity, state : Boolean){
         appExecutors.diskIO.execute {
-            userEntity.isBoomark = bookmarkState
+            userEntity.isBoomark = state
             userDao.updateUser(userEntity)
         }
     }
 
-    fun getBookmark() : LiveData<List<UserEntity>>{
-        return userDao.getBookmark()
+    fun getFavorite() : LiveData<List<UserEntity>>{
+        return userDao.getFavorite()
     }
 
     companion object{

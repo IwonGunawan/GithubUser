@@ -7,9 +7,9 @@ import com.iwon.githubuser.db.repository.UserRepository
 class ListUserViewModel(private val userRepository: UserRepository) : ViewModel() {
     fun getListUser() = userRepository.getListUser()
 
-    fun setBookmark(userEntity: UserEntity) = userRepository.setBookmark(userEntity, true)
+    fun setFavorite(userEntity: UserEntity) = userRepository.setFavorite(userEntity, true)
 
-    fun unBookmark(userEntity: UserEntity) = userRepository.setBookmark(userEntity, false)
+    fun unFavorite(userEntity: UserEntity) = userRepository.setFavorite(userEntity, false)
 
-    fun getBookmark() = userRepository.getBookmark()
+    fun getFavorite() = userRepository.getFavorite()
 }

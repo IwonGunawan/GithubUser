@@ -73,9 +73,9 @@ class ListUserFragment : Fragment() {
 
         listUserAdapter = ListUserAdapter{ userEntity ->
             if (userEntity.isBoomark){
-                listUserViewModel.unBookmark(userEntity)
+                listUserViewModel.unFavorite(userEntity)
             }else{
-                listUserViewModel.setBookmark(userEntity)
+                listUserViewModel.setFavorite(userEntity)
             }
         }
 
@@ -143,6 +143,7 @@ class ListUserFragment : Fragment() {
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu?.findItem(R.id.menu_search)?.actionView as SearchView
 
+        // search bar
         searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
         searchView.queryHint = this.resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -160,6 +161,19 @@ class ListUserFragment : Fragment() {
             }
 
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menu_favorite -> {
+                view?.findNavController()?.navigate(R.id.action_listUserFragment_to_listBookmarkFragment)
+                return true
+            }
+            R.id.menu_dark_mode -> {
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun searchUser(query: String?){
