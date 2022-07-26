@@ -31,19 +31,23 @@ class UserRepository private constructor(
                 if (response.code() == GlobalVariable.iRESPONSE_OK && response.body() != null){
                     val userResp = response.body()
                     appExecutors.diskIO.execute {
-                        val userList = ArrayList<UserEntity>()
+                        //val userList = ArrayList<UserEntity>()
                         userResp?.forEach { user ->
-                            val stateUserBookmark = userDao.isBookmark(user.id)
+                            //val stateUserBookmark = userDao.isBookmark(user.id)
                             val entity = UserEntity(
                                 user.id,
                                 user.login,
                                 user.avatarUrl,
                                 user.url,
-                                stateUserBookmark)
-                            userList.add(entity)
+                                false)
+                            val isExist = userDao.isExist(user.id)
+                            if (!isExist){
+                                userDao.insert(entity)
+                            }
+                            //userList.add(entity)
                         }
-                        userDao.deleteAll()
-                        userDao.insertAllUser(userList)
+                        //userDao.deleteAll()
+                        //userDao.insertAllUser(userList)
                     } // end appExecutor
                 } // end 200
             }
@@ -71,6 +75,21 @@ class UserRepository private constructor(
     fun getFavorite() : LiveData<List<UserEntity>>{
         return userDao.getFavorite()
     }
+
+    fun insertUsers(userEntity: UserEntity){
+        appExecutors.diskIO.execute {
+            userDao.insert(userEntity)
+        }
+    }
+
+    fun isFavorite(userId:Int): Boolean{
+        return userDao.isFavorite(userId)
+    }
+
+    fun isExist(userId: Int) : Boolean{
+        return userDao.isExist(userId)
+    }
+
 
     companion object{
         @Volatile

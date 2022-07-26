@@ -24,7 +24,7 @@ abstract class GithubUserDB : RoomDatabase() {
                         context.applicationContext,
                         GithubUserDB::class.java,
                         "github_user_db"
-                    ).build()
+                    ).allowMainThreadQueries().build()
                 }
             }
 

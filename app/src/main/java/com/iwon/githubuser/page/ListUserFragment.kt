@@ -28,6 +28,7 @@ import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
 import com.iwon.githubuser.db.entity.UserEntity
+import com.iwon.githubuser.db.repository.UserRepository
 import com.iwon.githubuser.helper.Result
 import com.iwon.githubuser.helper.SettingFactory
 import com.iwon.githubuser.helper.SettingPreferences
@@ -51,6 +52,7 @@ class ListUserFragment : Fragment() {
     private lateinit var mContext : Context
     private lateinit var mActivity : MainActivity
     private lateinit var listUserAdapter: ListUserAdapter
+    private lateinit var listUserViewModel: ListUserViewModel
     private lateinit var settingViewModel : SettingViewModel
     private lateinit var lightMenu: MenuItem
     private lateinit var darkMenu: MenuItem
@@ -73,18 +75,17 @@ class ListUserFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentListUserBinding.inflate(inflater, container, false)
+        // set view model
+        val factory : ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
+        listUserViewModel = ViewModelProvider(mActivity,factory).get(
+            ListUserViewModel::class.java
+        )
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getListUser()
-    }
-
-    private fun getListUser(){
-        val factory : ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val listUserViewModel : ListUserViewModel by viewModels { factory }
-
         listUserAdapter = ListUserAdapter{ userEntity ->
             if (userEntity.isBoomark){
                 listUserViewModel.unFavorite(userEntity)
@@ -93,6 +94,10 @@ class ListUserFragment : Fragment() {
             }
         }
 
+        getListUser()
+    }
+
+    private fun getListUser(){
         if (view != null){
             listUserViewModel.getListUser().observe(viewLifecycleOwner, { result ->
                 if (result != null){
@@ -245,12 +250,11 @@ class ListUserFragment : Fragment() {
 
     private fun loadData(data : List<ListUsersResponse>){
         hideLoading()
-        val searchUserAdapter = SearchUserAdapter(mContext, data)
+        val searchUserAdapter = SearchUserAdapter(mContext, data, listUserViewModel)
         binding.rvListUser.adapter = searchUserAdapter
 
         searchUserAdapter.callbackListener = object : SearchUserAdapter.CallbackListener{
             override fun onClick(user: ListUsersResponse) {
-                Log.d(GlobalVariable.TAG, "onClick: this click")
                 toDetailPage(user.login)
             }
         }

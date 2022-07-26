@@ -12,4 +12,10 @@ class ListUserViewModel(private val userRepository: UserRepository) : ViewModel(
     fun unFavorite(userEntity: UserEntity) = userRepository.setFavorite(userEntity, false)
 
     fun getFavorite() = userRepository.getFavorite()
+
+    fun insertUser(userEntity: UserEntity) = userRepository.insertUsers(userEntity)
+
+    fun isFavorite(userId: Int) = userRepository.isFavorite(userId)
+
+    fun isExist(userId: Int) = userRepository.isExist(userId)
 }

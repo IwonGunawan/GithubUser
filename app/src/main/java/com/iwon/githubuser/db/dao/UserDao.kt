@@ -23,8 +23,11 @@ interface UserDao {
     fun deleteAll()
 
     @Query("SELECT EXISTS(SELECT * FROM user WHERE user_id=:userId AND is_bookmark=1)")
-    fun isBookmark(userId : Int) : Boolean
+    fun isFavorite(userId : Int) : Boolean
 
     @Query("SELECT * FROM user WHERE is_bookmark=1")
     fun getFavorite() : LiveData<List<UserEntity>>
+
+    @Query("SELECT EXISTS(SELECT * FROM user WHERE user_id=:userId)")
+    fun isExist(userId: Int) : Boolean
 }
