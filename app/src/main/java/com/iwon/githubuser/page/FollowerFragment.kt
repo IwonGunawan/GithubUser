@@ -3,6 +3,7 @@ package com.iwon.githubuser.page
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,15 +23,32 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowerFragment(private val username : String) : Fragment() {
+public class FollowerFragment : Fragment() {
 
     private var _binding : FragmentFollowerBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
+    private lateinit var userName: String
+
+    companion object{
+        fun newInstance(sUserName : String) =
+            FollowerFragment().apply {
+                arguments = Bundle().apply {
+                    putString("USERNAME", sUserName)
+                }
+            }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userName = it.getString("USERNAME").toString()
+        }
     }
 
     override fun onCreateView(
@@ -62,7 +80,7 @@ class FollowerFragment(private val username : String) : Fragment() {
         val call = ApiConfig.getApiService().getFollow(
             GlobalVariable.headerAccept,
             GlobalVariable.headerAuth,
-            username,
+            userName,
             GlobalVariable.sFOLLOWERS
         )
         call.enqueue(object : Callback<List<ListUsersResponse>>{

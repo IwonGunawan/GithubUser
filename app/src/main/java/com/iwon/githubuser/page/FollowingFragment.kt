@@ -23,15 +23,32 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class FollowingFragment(private val username : String) : Fragment() {
+class FollowingFragment: Fragment() {
 
     private var _binding : FragmentFollowingBinding? = null
     private val binding get() = _binding!!
     private lateinit var mContext: Context
+    private lateinit var userName: String
+
+    companion object{
+        fun newInstance(sUserName : String) =
+            FollowerFragment().apply {
+                arguments = Bundle().apply {
+                    putString("USERNAME", sUserName)
+                }
+            }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userName = it.getString("USERNAME").toString()
+        }
     }
 
     override fun onCreateView(
@@ -63,7 +80,7 @@ class FollowingFragment(private val username : String) : Fragment() {
         val call = ApiConfig.getApiService().getFollow(
             GlobalVariable.headerAccept,
             GlobalVariable.headerAuth,
-            username,
+            userName,
             GlobalVariable.sFOLLOWING
         )
         call.enqueue(object : Callback<List<ListUsersResponse>>{
