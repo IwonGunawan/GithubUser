@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
@@ -15,7 +14,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +26,6 @@ import com.iwon.githubuser.api.response.ListUsersResponse
 import com.iwon.githubuser.api.response.UserSearchResponse
 import com.iwon.githubuser.databinding.FragmentListUserBinding
 import com.iwon.githubuser.db.entity.UserEntity
-import com.iwon.githubuser.db.repository.UserRepository
 import com.iwon.githubuser.helper.Result
 import com.iwon.githubuser.helper.SettingFactory
 import com.iwon.githubuser.helper.SettingPreferences
