@@ -1,6 +1,5 @@
 package com.iwon.githubuser.db.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.iwon.githubuser.GlobalVariable
@@ -13,7 +12,6 @@ import com.iwon.githubuser.helper.Result
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 class UserRepository private constructor(
     private val apiService: ApiService,

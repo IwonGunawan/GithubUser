@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.iwon.githubuser.db.repository.UserRepository
 import com.iwon.githubuser.page.viewModel.ListUserViewModel
-import java.lang.IllegalArgumentException
 
 class ViewModelFactory private constructor(private val userRepository: UserRepository) : ViewModelProvider.NewInstanceFactory(){
 

@@ -2,7 +2,6 @@ package com.iwon.githubuser
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 class GlobalVariable {
 

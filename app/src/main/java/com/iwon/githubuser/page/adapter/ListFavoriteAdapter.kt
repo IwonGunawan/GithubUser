@@ -2,11 +2,9 @@ package com.iwon.githubuser.page.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.iwon.githubuser.GlobalVariable.Companion.loadImage
-import com.iwon.githubuser.R
 import com.iwon.githubuser.databinding.ItemFavoriteBinding
 import com.iwon.githubuser.db.entity.UserEntity
 import com.iwon.githubuser.page.adapter.ListUserAdapter.Companion.DIFF_CALLBACK

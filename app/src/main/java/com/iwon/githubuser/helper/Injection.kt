@@ -2,7 +2,6 @@ package com.iwon.githubuser.helper
 
 import android.content.Context
 import com.iwon.githubuser.api.ApiConfig
-import com.iwon.githubuser.api.ApiService
 import com.iwon.githubuser.db.GithubUserDB
 import com.iwon.githubuser.db.repository.UserRepository
 
