@@ -94,28 +94,30 @@ class ListUserFragment : Fragment() {
             }
         }
 
-        listUserViewModel.getListUser().observe(viewLifecycleOwner, { result ->
-            if (result != null){
-                when(result){
-                    is Result.Loading -> {
-                        showLoading()
-                    }
-                    is Result.Success -> {
-                        hideLoading()
-                        val userData = result.data
-                        listUserAdapter.submitList(userData)
-                    }
-                    is Result.Error -> {
-                        hideLoading()
-                        var msg = "Terjadi kesalahan ${result.error.message.toString()}"
-                        if (GlobalVariable.isIOException(result.error)){
-                            msg = mContext.resources.getString(R.string.error_no_connection)
+        if (view != null){
+            listUserViewModel.getListUser().observe(viewLifecycleOwner, { result ->
+                if (result != null){
+                    when(result){
+                        is Result.Loading -> {
+                            showLoading()
                         }
-                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                        is Result.Success -> {
+                            hideLoading()
+                            val userData = result.data
+                            listUserAdapter.submitList(userData)
+                        }
+                        is Result.Error -> {
+                            hideLoading()
+                            var msg = "Terjadi kesalahan ${result.error.message.toString()}"
+                            if (GlobalVariable.isIOException(result.error)){
+                                msg = mContext.resources.getString(R.string.error_no_connection)
+                            }
+                            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
 
         binding?.rvListUser?.apply {
             layoutManager = GridLayoutManager(mContext, 3)
@@ -126,18 +128,6 @@ class ListUserFragment : Fragment() {
                 override fun onClick(userEntity: UserEntity) {
                     toDetailPage(userEntity.userName)
                 }
-            }
-        }
-    }
-
-    private fun loadData(data : List<ListUsersResponse>){
-        hideLoading()
-        val adapter = SearchUserAdapter(mContext, data)
-        binding.rvListUser.adapter = adapter
-
-        adapter.callbackListener = object : SearchUserAdapter.CallbackListener{
-            override fun onClick(user: ListUsersResponse) {
-                toDetailPage(user.login)
             }
         }
     }
@@ -252,6 +242,19 @@ class ListUserFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun loadData(data : List<ListUsersResponse>){
+        hideLoading()
+        val searchUserAdapter = SearchUserAdapter(mContext, data)
+        binding.rvListUser.adapter = searchUserAdapter
+
+        searchUserAdapter.callbackListener = object : SearchUserAdapter.CallbackListener{
+            override fun onClick(user: ListUsersResponse) {
+                Log.d(GlobalVariable.TAG, "onClick: this click")
+                toDetailPage(user.login)
+            }
+        }
     }
 
     private fun showLoading(){

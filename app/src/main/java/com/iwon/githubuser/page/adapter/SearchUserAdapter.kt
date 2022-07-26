@@ -35,7 +35,7 @@ class SearchUserAdapter(private val mContext: Context, private val listUsers: Li
         holder.itemMain.setOnClickListener {
             callbackListener?.onClick(data)
         }
-        holder.ivFavorite.visibility = View.GONE
+        holder.ivFavorite.visibility = View.INVISIBLE
     }
 
     override fun getItemCount() = listUsers.size
