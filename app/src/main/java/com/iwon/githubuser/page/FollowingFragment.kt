@@ -32,7 +32,7 @@ class FollowingFragment: Fragment() {
 
     companion object{
         fun newInstance(sUserName : String) =
-            FollowerFragment().apply {
+            FollowingFragment().apply {
                 arguments = Bundle().apply {
                     putString("USERNAME", sUserName)
                 }
